@@ -1,0 +1,24 @@
+# Build results
+bin/
+obj/
+
+# VS / VS Code / Rider
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# ASP.NET Core / tooling
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets (IMPORTANT)
+appsettings.*.json
+!appsettings.json
+*.env
+
+# Optional: user secrets / local dev certificates (usually not in repo anyway)
