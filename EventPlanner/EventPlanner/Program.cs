@@ -54,4 +54,6 @@ app.MapControllerRoute(
 
 app.MapRazorPages();       // ✅ enables /Identity/Account/Login, Register, etc.
 
+await DbSeeder.SeedAsync(app.Services);
+
 app.Run();
