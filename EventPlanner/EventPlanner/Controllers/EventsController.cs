@@ -277,6 +277,38 @@ public class EventsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [Authorize]
+    public async Task<IActionResult> MyEvents()
+    {
+        var userId = userManager.GetUserId(User)!;
+
+        var myEvents = await db.Events
+            .AsNoTracking()
+            .Where(e => e.OrganizerId == userId)
+            .Include(e => e.Category)
+            .Include(e => e.Location)
+            .OrderBy(e => e.StartDate)
+            .Select(e => new EventListItemViewModel
+            {
+                Id = e.Id,
+                Title = e.Title,
+                StartDate = e.StartDate,
+                CategoryName = e.Category.Name,
+                City = e.Location.City
+            })
+            .ToListAsync();
+
+        var model = new EventIndexQueryModel
+        {
+            UpcomingOnly = false, // show all MyEvent by default
+            Categories = await GetCategorySelectListAsync(),
+            Events = myEvents
+        };
+
+        return View(model);
+    }
+
+
     // ---------------- Helpers ----------------
 
     // Is the currently logged-in user the creator (organizer) of this event?
