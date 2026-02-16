@@ -18,7 +18,7 @@ builder.Services
     {
         options.SignIn.RequireConfirmedAccount = false;
 
-        // SoftUni-friendly password rules (so you don't fight the UI)
+        // Password rules
         options.Password.RequireDigit = false;
         options.Password.RequireLowercase = false;
         options.Password.RequireUppercase = false;
@@ -45,14 +45,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthentication();   // ✅ must be BEFORE authorization
+app.UseAuthentication();   
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages();       // ✅ enables /Identity/Account/Login, Register, etc.
+app.MapRazorPages();       // enables /Identity/Account/Login, Register, etc.
 
 await DbSeeder.SeedAsync(app.Services);
 
