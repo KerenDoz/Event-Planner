@@ -1,0 +1,17 @@
+@model EventPlanner.Data.Models.Location
+@{
+    ViewData["Title"] = "Delete Location";
+}
+
+<h1>Delete Location</h1>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete <strong>@Model.City — @Model.Name</strong>?
+</div>
+
+<form method="post" asp-action="DeleteConfirmed">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button class="btn btn-danger" type="submit">Yes, delete</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>

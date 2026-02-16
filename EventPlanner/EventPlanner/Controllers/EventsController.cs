@@ -102,8 +102,16 @@ public class EventsController : Controller
     [Authorize]
     public async Task<IActionResult> Create()
     {
+        var now = DateTime.Now;
+        
+        var start = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0).AddHours(1);
+        var end = start.AddHours(2);
+
         var model = new EventFormModel
         {
+            StartDate = start,
+            EndDate = end,
+            Capacity = 1,
             Categories = await GetCategorySelectListAsync(),
             Locations = await GetLocationSelectListAsync()
         };
