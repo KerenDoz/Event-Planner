@@ -1,0 +1,17 @@
+@model EventPlanner.Models.Events.EventDetailsViewModel
+@{
+    ViewData["Title"] = "Delete Event";
+}
+
+<h1>Delete Event</h1>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete <strong>@Model.Title</strong>?
+</div>
+
+<form method="post" asp-action="DeleteConfirmed">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button class="btn btn-danger" type="submit">Yes, delete</button>
+    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+</form>

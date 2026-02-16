@@ -1,0 +1,51 @@
+@model EventPlanner.Models.Events.EventFormModel
+
+<div class="mb-3">
+    <label class="form-label" asp-for="Title"></label>
+    <input class="form-control" asp-for="Title" />
+    <span class="text-danger" asp-validation-for="Title"></span>
+</div>
+
+<div class="mb-3">
+    <label class="form-label" asp-for="Description"></label>
+    <textarea class="form-control" asp-for="Description" rows="4"></textarea>
+    <span class="text-danger" asp-validation-for="Description"></span>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label class="form-label" asp-for="StartDate"></label>
+        <input class="form-control" asp-for="StartDate" type="datetime-local" />
+        <span class="text-danger" asp-validation-for="StartDate"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label class="form-label" asp-for="EndDate"></label>
+        <input class="form-control" asp-for="EndDate" type="datetime-local" />
+        <span class="text-danger" asp-validation-for="EndDate"></span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <label class="form-label" asp-for="Capacity"></label>
+        <input class="form-control" asp-for="Capacity" />
+        <span class="text-danger" asp-validation-for="Capacity"></span>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label" asp-for="CategoryId"></label>
+        <select class="form-select" asp-for="CategoryId" asp-items="Model.Categories"></select>
+        <span class="text-danger" asp-validation-for="CategoryId"></span>
+    </div>
+
+    <div class="col-md-4 mb-3">
+        <label class="form-label" asp-for="LocationId"></label>
+        <select class="form-select" asp-for="LocationId" asp-items="Model.Locations"></select>
+        <span class="text-danger" asp-validation-for="LocationId"></span>
+    </div>
+</div>
+
+<div class="form-check mb-3">
+    <input class="form-check-input" asp-for="IsPublic" />
+    <label class="form-check-label" asp-for="IsPublic"></label>
+</div>

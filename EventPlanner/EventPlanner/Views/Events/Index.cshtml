@@ -1,0 +1,55 @@
+@model EventPlanner.Models.Events.EventIndexQueryModel
+@{
+    ViewData["Title"] = "Events";
+}
+
+<h1>Events</h1>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input class="form-control" asp-for="Search" placeholder="Search by title..." />
+    </div>
+    <div class="col-md-4">
+        <select class="form-select" asp-for="CategoryId" asp-items="Model.Categories">
+            <option value="">All categories</option>
+        </select>
+    </div>
+    <div class="col-md-2 form-check align-self-center ms-2">
+        <input class="form-check-input" asp-for="UpcomingOnly" />
+        <label class="form-check-label" asp-for="UpcomingOnly">Upcoming only</label>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-primary w-100" type="submit">Filter</button>
+    </div>
+</form>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <a class="btn btn-success mb-3" asp-action="Create">Create Event</a>
+}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Start</th>
+            <th>Category</th>
+            <th>City</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var e in Model.Events)
+    {
+        <tr>
+            <td>@e.Title</td>
+            <td>@e.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
+            <td>@e.CategoryName</td>
+            <td>@e.City</td>
+            <td>
+                <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@e.Id">Details</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

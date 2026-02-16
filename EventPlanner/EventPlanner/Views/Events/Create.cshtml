@@ -1,0 +1,16 @@
+@model EventPlanner.Models.Events.EventFormModel
+@{
+    ViewData["Title"] = "Create Event";
+}
+
+<h1>Create Event</h1>
+
+<form method="post">
+    <partial name="_EventFormPartial" model="Model" />
+    <button class="btn btn-success" type="submit">Create</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
