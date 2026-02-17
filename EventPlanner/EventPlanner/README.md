@@ -63,6 +63,7 @@ Example:
      "DefaultConnection": "Server=localhost,1433;Database=EventPlannerDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;"
     }
 }
+```
 
 ## 2️⃣ Apply migrations:
 dotnet ef database update
