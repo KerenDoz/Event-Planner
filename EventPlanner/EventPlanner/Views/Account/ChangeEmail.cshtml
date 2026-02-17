@@ -1,0 +1,27 @@
+@model EventPlanner.Models.Account.ChangeEmailViewModel
+@{
+    ViewData["Title"] = "Change Email";
+}
+
+<h1>Change Email</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label" asp-for="NewEmail"></label>
+        <input class="form-control" asp-for="NewEmail" autocomplete="email" />
+        <span class="text-danger" asp-validation-for="NewEmail"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="CurrentPassword"></label>
+        <input class="form-control" asp-for="CurrentPassword" autocomplete="current-password" />
+        <span class="text-danger" asp-validation-for="CurrentPassword"></span>
+    </div>
+
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+    <button class="btn btn-primary" type="submit">Save</button>
+    <a class="btn btn-secondary" asp-action="Manage">Back</a>
+</form>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

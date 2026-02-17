@@ -1,0 +1,29 @@
+@model EventPlanner.Models.Account.ManageViewModel
+@{
+    ViewData["Title"] = "My Account";
+}
+
+<h1>My Account</h1>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+
+<div class="row g-3 mt-2">
+    <div class="col-md-4">
+        <a class="btn btn-outline-primary w-100 py-3" asp-action="ChangeUsername">
+            Change Username
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="btn btn-outline-secondary w-100 py-3" asp-action="ChangeEmail">
+            Change Email
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="btn btn-outline-dark w-100 py-3" asp-action="ChangePassword">
+            Change Password
+        </a>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+@model EventPlanner.Models.Account.ChangeUsernameViewModel
+@{
+    ViewData["Title"] = "Change Username";
+}
+
+<h1>Change Username</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label" asp-for="NewUsername"></label>
+        <input class="form-control" asp-for="NewUsername" autocomplete="username" />
+        <span class="text-danger" asp-validation-for="NewUsername"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label" asp-for="CurrentPassword"></label>
+        <input class="form-control" asp-for="CurrentPassword" autocomplete="current-password" />
+        <span class="text-danger" asp-validation-for="CurrentPassword"></span>
+    </div>
+
+    <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+    <button class="btn btn-primary" type="submit">Save</button>
+    <a class="btn btn-secondary" asp-action="Manage">Back</a>
+</form>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

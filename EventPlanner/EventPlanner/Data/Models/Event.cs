@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using EventPlanner.Data;
 
 namespace EventPlanner.Data.Models;
 
@@ -36,5 +37,5 @@ public class Event
     // Organizer (Identity user)
     [Required]
     public string OrganizerId { get; set; } = null!;
-    public IdentityUser Organizer { get; set; } = null!;
+    public ApplicationUser Organizer { get; set; } = null!;
 }

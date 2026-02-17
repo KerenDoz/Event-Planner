@@ -12,9 +12,9 @@ namespace EventPlanner.Controllers;
 public class EventsController : Controller
 {
     private readonly ApplicationDbContext db; //EF Core database access
-    private readonly UserManager<IdentityUser> userManager; //gives the logged-in user info
+    private readonly UserManager<ApplicationUser> userManager; //gives the logged-in user info
 
-    public EventsController(ApplicationDbContext db, UserManager<IdentityUser> userManager)
+    public EventsController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
     {
         this.db = db;
         this.userManager = userManager;
