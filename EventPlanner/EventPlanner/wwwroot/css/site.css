@@ -8,7 +8,11 @@ html {
   }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -19,4 +23,57 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+/* ===== Background ===== */
+body {
+  margin-bottom: 60px;
+
+  background:
+    radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.18), transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(16, 185, 129, 0.18), transparent 45%),
+    radial-gradient(circle at 30% 85%, rgba(236, 72, 153, 0.14), transparent 45%),
+    linear-gradient(180deg, #f8fafc 0%, #ffffff 60%);
+  background-attachment: fixed;
+}
+
+/* Main content glass panel */
+.container main {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+/* Navbar glass look */
+.navbar {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Cards polish */
+.card {
+  border-radius: 16px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+/* Buttons feel a bit nicer */
+.btn {
+  border-radius: 10px;
+}
+
+/* Home title */
+.display-5 {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
