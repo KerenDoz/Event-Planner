@@ -58,15 +58,13 @@ Update the connection string in appsettings.json:
 
 Example:
 ```json
-{
-    "ConnectionStrings": {
-     "DefaultConnection": "Server=localhost,1433;Database=EventPlannerDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;"
-    }
+"ConnectionStrings": {
+  "DefaultConnection": "Server=localhost,1433;Database=EventPlannerDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;"
 }
 ```
 
-## 2️⃣ Apply migrations:
+### 2️⃣ Apply migrations:
 dotnet ef database update
 
-## 3️⃣ Run the application:
+### 3️⃣ Run the application:
 dotnet run
