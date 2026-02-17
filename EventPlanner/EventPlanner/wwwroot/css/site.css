@@ -77,3 +77,11 @@ body {
   transform: translateY(-3px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
+
+.navbar form {
+  margin: 0;
+}
+
+.navbar button.nav-link {
+  line-height: 1.5;
+}
