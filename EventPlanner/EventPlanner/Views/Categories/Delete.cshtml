@@ -1,0 +1,17 @@
+@model EventPlanner.Data.Models.Category
+@{
+    ViewData["Title"] = "Delete Category";
+}
+
+<h1>Delete Category</h1>
+
+<div class="alert alert-warning">
+    Are you sure you want to delete <strong>@Model.Name</strong>?
+</div>
+
+<form method="post" asp-action="DeleteConfirmed">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button class="btn btn-danger" type="submit">Yes, delete</button>
+    <a class="btn btn-secondary" asp-action="Index">Cancel</a>
+</form>
