@@ -58,8 +58,10 @@ Update the connection string in appsettings.json:
 
 Example:
 ```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost,1433;Database=EventPlannerDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;"
+{
+    "ConnectionStrings": {
+     "DefaultConnection": "Server=localhost,1433;Database=EventPlannerDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;"
+    }
 }
 
 ## 2️⃣ Apply migrations:
