@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using EventPlanner.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
@@ -13,6 +14,9 @@ public class ApplicationUser : IdentityUser
     [Required]
     [StringLength(50, MinimumLength = 2)]
     public string LastName { get; set; } = null!;
+
+    [NotMapped]
+    public string FullName => $"{FirstName} {LastName}";
 
     public ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
     public ICollection<Event> CreatedEvents { get; set; } = new HashSet<Event>();

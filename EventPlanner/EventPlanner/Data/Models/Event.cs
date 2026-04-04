@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EventPlanner.Data.Models;
 
-public class Event
+public class Event : IValidatableObject
 {
     [Key]
     public int Id { get; set; }
@@ -52,4 +52,14 @@ public class Event
 
     public ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
 
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        if (EndDate <= StartDate)
+        {
+            yield return new ValidationResult(
+                "End date must be after start date.",
+                new[] { nameof(EndDate) });
+        }
+    }
 }
