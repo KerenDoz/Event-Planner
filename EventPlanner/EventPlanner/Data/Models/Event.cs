@@ -52,6 +52,9 @@ public class Event : IValidatableObject
 
     public ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
 
+    public DateTime CreatedOn { get; set; } = DateTime.UtcNow; // Experiment
+
+    public bool IsDeleted { get; set; } = false;
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
