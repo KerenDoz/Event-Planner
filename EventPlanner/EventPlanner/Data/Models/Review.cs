@@ -17,4 +17,17 @@ public class Review
     public string? Comment { get; set; }
 
     public DateTime CreatedOn { get; set; } = DateTime.UtcNow;
+
+    // Relations
+    [Required]
+    public int EventId { get; set; }
+
+    [ForeignKey(nameof(EventId))]
+    public Event Event { get; set; } = null!;
+
+    [Required]
+    public string UserId { get; set; } = null!;
+
+    [ForeignKey(nameof(UserId))]
+    public ApplicationUser User { get; set; } = null!;
 }

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
-using EventPlanner.Data;
 using System.ComponentModel.DataAnnotations.Schema;
+using EventPlanner.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace EventPlanner.Data.Models;
 
@@ -62,7 +62,10 @@ public class Event : IValidatableObject
         {
             yield return new ValidationResult(
                 "End date must be after start date.",
-                new[] { nameof(EndDate) });
+                new[] { nameof(EndDate) }
+            );
         }
     }
+
+    public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
 }
