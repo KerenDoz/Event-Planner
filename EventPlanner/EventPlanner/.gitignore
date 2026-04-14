@@ -22,3 +22,7 @@ appsettings.*.json
 *.env
 
 # Optional: user secrets / local dev certificates (usually not in repo anyway)
+.editorconfig
+launch.json
+tasks.json
+settings.json

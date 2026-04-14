@@ -19,7 +19,7 @@ public class EventsController : Controller
         this.db = db;
         this.userManager = userManager;
     }
- // PUBLIC: Browse
+    // PUBLIC: Browse
     public async Task<IActionResult> Index([FromQuery] EventIndexQueryModel query)
     {
         query.Categories = await GetCategorySelectListAsync();
@@ -103,7 +103,7 @@ public class EventsController : Controller
     public async Task<IActionResult> Create()
     {
         var now = DateTime.Now;
-        
+
         var start = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0).AddHours(1);
         var end = start.AddHours(2);
 
@@ -312,7 +312,7 @@ public class EventsController : Controller
     // ---------------- Helpers ----------------
 
     // Is the currently logged-in user the creator (organizer) of this event?
-    private bool IsOwner(Event ev) 
+    private bool IsOwner(Event ev)
     {
         var userId = userManager.GetUserId(User);
         return userId != null && ev.OrganizerId == userId;
