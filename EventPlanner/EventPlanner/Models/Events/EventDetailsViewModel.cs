@@ -1,3 +1,5 @@
+using EventPlanner.Models.Comments;
+
 namespace EventPlanner.Models.Events;
 
 public class EventDetailsViewModel
@@ -17,4 +19,5 @@ public class EventDetailsViewModel
 
     public string OrganizerUserName { get; set; } = null!;
     public bool IsOwner { get; set; }
+    public List<CommentViewModel> Comments { get; set; } = new();
 }

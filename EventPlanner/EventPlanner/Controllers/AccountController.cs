@@ -1,3 +1,4 @@
+using EventPlanner.Common;
 using EventPlanner.Data;
 using EventPlanner.Models.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,8 @@ public class AccountController : Controller
 
     public AccountController(
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
+        SignInManager<ApplicationUser> signInManager
+    )
     {
         this.userManager = userManager;
         this.signInManager = signInManager;
@@ -27,7 +29,8 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
 
         var username = model.Username.Trim();
         var email = model.Email.Trim();
@@ -44,13 +47,10 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = new ApplicationUser
-        {
-            UserName = username,
-            Email = email
-        };
+        var user = new ApplicationUser { UserName = username, Email = email };
 
         var result = await userManager.CreateAsync(user, model.Password);
+
         if (!result.Succeeded)
         {
             foreach (var err in result.Errors)
@@ -58,6 +58,8 @@ public class AccountController : Controller
 
             return View(model);
         }
+
+        await userManager.AddToRoleAsync(user, RoleConstants.User);
 
         await signInManager.SignInAsync(user, isPersistent: false);
         return RedirectToAction("Index", "Home");
@@ -75,7 +77,8 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
 
         // allow login with username OR email
         var input = model.UsernameOrEmail.Trim();
@@ -96,7 +99,8 @@ public class AccountController : Controller
             user.UserName!,
             model.Password,
             model.RememberMe,
-            lockoutOnFailure: false);
+            lockoutOnFailure: false
+        );
 
         if (!result.Succeeded)
         {
@@ -139,10 +143,12 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Manage(ManageViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
 
         var user = await userManager.GetUserAsync(User);
-        if (user == null) return RedirectToAction(nameof(Login));
+        if (user == null)
+            return RedirectToAction(nameof(Login));
 
         var newUsername = model.Username.Trim();
         var newEmail = model.Email.Trim();
@@ -186,7 +192,8 @@ public class AccountController : Controller
     public async Task<IActionResult> ChangeUsername()
     {
         var user = await userManager.GetUserAsync(User);
-        if (user == null) return RedirectToAction(nameof(Login));
+        if (user == null)
+            return RedirectToAction(nameof(Login));
 
         return View(new ChangeUsernameViewModel { NewUsername = user.UserName ?? "" });
     }
@@ -196,10 +203,12 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangeUsername(ChangeUsernameViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
 
         var user = await userManager.GetUserAsync(User);
-        if (user == null) return RedirectToAction(nameof(Login));
+        if (user == null)
+            return RedirectToAction(nameof(Login));
 
         var newUsername = model.NewUsername.Trim();
 
@@ -237,7 +246,8 @@ public class AccountController : Controller
     public async Task<IActionResult> ChangeEmail()
     {
         var user = await userManager.GetUserAsync(User);
-        if (user == null) return RedirectToAction(nameof(Login));
+        if (user == null)
+            return RedirectToAction(nameof(Login));
 
         return View(new ChangeEmailViewModel { NewEmail = user.Email ?? "" });
     }
@@ -247,10 +257,12 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangeEmail(ChangeEmailViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
 
         var user = await userManager.GetUserAsync(User);
-        if (user == null) return RedirectToAction(nameof(Login));
+        if (user == null)
+            return RedirectToAction(nameof(Login));
 
         var newEmail = model.NewEmail.Trim();
 
@@ -295,12 +307,18 @@ public class AccountController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
-        if (!ModelState.IsValid) return View(model);
+        if (!ModelState.IsValid)
+            return View(model);
 
         var user = await userManager.GetUserAsync(User);
-        if (user == null) return RedirectToAction(nameof(Login));
+        if (user == null)
+            return RedirectToAction(nameof(Login));
 
-        var result = await userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        var result = await userManager.ChangePasswordAsync(
+            user,
+            model.CurrentPassword,
+            model.NewPassword
+        );
         if (!result.Succeeded)
         {
             foreach (var err in result.Errors)
@@ -312,5 +330,4 @@ public class AccountController : Controller
         TempData["Message"] = "Password updated.";
         return RedirectToAction(nameof(Manage));
     }
-
 }

@@ -15,6 +15,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Location> Locations { get; set; } = null!;
     public DbSet<Participant> Participants { get; set; } = null!;
 
+    //public DbSet<Review> Reviews { get; set; } = null!;
+    public DbSet<Comment> Comments { get; set; } = null!;
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

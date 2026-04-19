@@ -1,5 +1,6 @@
 using EventPlanner.Data;
 using EventPlanner.Data.Models;
+using EventPlanner.Models.Comments;
 using EventPlanner.Models.Events;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,17 +20,17 @@ public class EventsController : Controller
         this.db = db;
         this.userManager = userManager;
     }
+
     // PUBLIC: Browse
     public async Task<IActionResult> Index([FromQuery] EventIndexQueryModel query)
     {
         query.Categories = await GetCategorySelectListAsync();
 
-        IQueryable<EventPlanner.Data.Models.Event> eventsQuery = db.Events
-            .AsNoTracking()
+        IQueryable<EventPlanner.Data.Models.Event> eventsQuery = db
+            .Events.AsNoTracking()
             .Where(e => e.IsPublic)
             .Include(e => e.Category)
             .Include(e => e.Location);
-
 
         if (query.UpcomingOnly)
         {
@@ -55,7 +56,7 @@ public class EventsController : Controller
                 Title = e.Title,
                 StartDate = e.StartDate,
                 CategoryName = e.Category.Name,
-                City = e.Location.City
+                City = e.Location.City,
             })
             .ToListAsync();
 
@@ -65,11 +66,13 @@ public class EventsController : Controller
     // PUBLIC: Details
     public async Task<IActionResult> Details(int id)
     {
-        var ev = await db.Events
-            .AsNoTracking()
+        var ev = await db
+            .Events.AsNoTracking()
             .Include(e => e.Category)
             .Include(e => e.Location)
             .Include(e => e.Organizer)
+            .Include(e => e.Comments)
+                .ThenInclude(c => c.User)
             .FirstOrDefaultAsync(e => e.Id == id);
 
         if (ev == null || (!ev.IsPublic && !User.Identity?.IsAuthenticated == true))
@@ -92,7 +95,18 @@ public class EventsController : Controller
             City = ev.Location.City,
             Address = ev.Location.Address,
             OrganizerUserName = ev.Organizer.UserName ?? ev.Organizer.Email ?? "Unknown",
-            IsOwner = userId != null && ev.OrganizerId == userId
+            IsOwner = userId != null && ev.OrganizerId == userId,
+
+            Comments = ev
+                .Comments.OrderByDescending(c => c.CreatedOn)
+                .Select(c => new CommentViewModel
+                {
+                    Id = c.Id,
+                    UserName = c.User.UserName ?? c.User.Email ?? "Unknown",
+                    Content = c.Content,
+                    CreatedOn = c.CreatedOn,
+                })
+                .ToList(),
         };
 
         return View(vm);
@@ -113,7 +127,7 @@ public class EventsController : Controller
             EndDate = end,
             Capacity = 1,
             Categories = await GetCategorySelectListAsync(),
-            Locations = await GetLocationSelectListAsync()
+            Locations = await GetLocationSelectListAsync(),
         };
 
         return View(model);
@@ -152,7 +166,7 @@ public class EventsController : Controller
             IsPublic = model.IsPublic,
             CategoryId = model.CategoryId,
             LocationId = model.LocationId,
-            OrganizerId = userId
+            OrganizerId = userId,
         };
 
         db.Events.Add(ev);
@@ -166,9 +180,11 @@ public class EventsController : Controller
     public async Task<IActionResult> Edit(int id)
     {
         var ev = await db.Events.FirstOrDefaultAsync(e => e.Id == id);
-        if (ev == null) return NotFound();
+        if (ev == null)
+            return NotFound();
 
-        if (!IsOwner(ev)) return Forbid();
+        if (!IsOwner(ev))
+            return Forbid();
 
         var model = new EventFormModel
         {
@@ -181,7 +197,7 @@ public class EventsController : Controller
             CategoryId = ev.CategoryId,
             LocationId = ev.LocationId,
             Categories = await GetCategorySelectListAsync(),
-            Locations = await GetLocationSelectListAsync()
+            Locations = await GetLocationSelectListAsync(),
         };
 
         return View(model);
@@ -193,9 +209,11 @@ public class EventsController : Controller
     public async Task<IActionResult> Edit(int id, EventFormModel model)
     {
         var ev = await db.Events.FirstOrDefaultAsync(e => e.Id == id);
-        if (ev == null) return NotFound();
+        if (ev == null)
+            return NotFound();
 
-        if (!IsOwner(ev)) return Forbid();
+        if (!IsOwner(ev))
+            return Forbid();
 
         if (!await CategoryExists(model.CategoryId))
         {
@@ -231,14 +249,16 @@ public class EventsController : Controller
     [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
-        var ev = await db.Events
-            .AsNoTracking()
+        var ev = await db
+            .Events.AsNoTracking()
             .Include(e => e.Category)
             .Include(e => e.Location)
             .FirstOrDefaultAsync(e => e.Id == id);
 
-        if (ev == null) return NotFound();
-        if (!IsOwner(ev)) return Forbid();
+        if (ev == null)
+            return NotFound();
+        if (!IsOwner(ev))
+            return Forbid();
 
         // reuse details viewmodel for confirm page
         var vm = new EventDetailsViewModel
@@ -255,7 +275,7 @@ public class EventsController : Controller
             City = ev.Location.City,
             Address = ev.Location.Address,
             OrganizerUserName = "",
-            IsOwner = true
+            IsOwner = true,
         };
 
         return View(vm);
@@ -267,9 +287,11 @@ public class EventsController : Controller
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var ev = await db.Events.FirstOrDefaultAsync(e => e.Id == id);
-        if (ev == null) return NotFound();
+        if (ev == null)
+            return NotFound();
 
-        if (!IsOwner(ev)) return Forbid();
+        if (!IsOwner(ev))
+            return Forbid();
 
         db.Events.Remove(ev);
         await db.SaveChangesAsync();
@@ -282,8 +304,8 @@ public class EventsController : Controller
     {
         var userId = userManager.GetUserId(User)!;
 
-        var myEvents = await db.Events
-            .AsNoTracking()
+        var myEvents = await db
+            .Events.AsNoTracking()
             .Where(e => e.OrganizerId == userId)
             .Include(e => e.Category)
             .Include(e => e.Location)
@@ -294,7 +316,7 @@ public class EventsController : Controller
                 Title = e.Title,
                 StartDate = e.StartDate,
                 CategoryName = e.Category.Name,
-                City = e.Location.City
+                City = e.Location.City,
             })
             .ToListAsync();
 
@@ -302,12 +324,37 @@ public class EventsController : Controller
         {
             UpcomingOnly = false, // show all MyEvent by default
             Categories = await GetCategorySelectListAsync(),
-            Events = myEvents
+            Events = myEvents,
         };
 
         return View(model);
     }
 
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> AddComment(AddCommentViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return RedirectToAction(nameof(Details), new { id = model.EventId });
+        }
+
+        var userId = userManager.GetUserId(User);
+
+        var comment = new Comment
+        {
+            EventId = model.EventId,
+            UserId = userId!,
+            Content = model.Content,
+            CreatedOn = DateTime.UtcNow,
+        };
+
+        db.Comments.Add(comment);
+        await db.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Details), new { id = model.EventId });
+    }
 
     // ---------------- Helpers ----------------
 
@@ -319,21 +366,25 @@ public class EventsController : Controller
     }
 
     // Returns data for a dropdown
-    private async Task<IEnumerable<SelectListItem>> GetCategorySelectListAsync()
-        => await db.Categories.AsNoTracking()
+    private async Task<IEnumerable<SelectListItem>> GetCategorySelectListAsync() =>
+        await db
+            .Categories.AsNoTracking()
             .OrderBy(c => c.Name)
             .Select(c => new SelectListItem(c.Name, c.Id.ToString()))
             .ToListAsync();
 
     // Creates dropdown option City-Location
-    private async Task<IEnumerable<SelectListItem>> GetLocationSelectListAsync()
-        => await db.Locations.AsNoTracking()
-            .OrderBy(l => l.City).ThenBy(l => l.Name)
+    private async Task<IEnumerable<SelectListItem>> GetLocationSelectListAsync() =>
+        await db
+            .Locations.AsNoTracking()
+            .OrderBy(l => l.City)
+            .ThenBy(l => l.Name)
             .Select(l => new SelectListItem($"{l.City} — {l.Name}", l.Id.ToString()))
             .ToListAsync();
 
     // Is this CategoryId actually in the database?
     private Task<bool> CategoryExists(int id) => db.Categories.AnyAsync(c => c.Id == id);
+
     // Is this LocationId actually in the database?
     private Task<bool> LocationExists(int id) => db.Locations.AnyAsync(l => l.Id == id);
 }

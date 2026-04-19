@@ -10,12 +10,53 @@
 </p>
 
 <p><strong>Category:</strong> @Model.CategoryName</p>
-<p><strong>Location:</strong> @Model.City — @Model.LocationName @if(!string.IsNullOrWhiteSpace(Model.Address)){<span>(@Model.Address)</span>}</p>
+<p><strong>Location:</strong> @Model.City — @Model.LocationName
+    @if (!string.IsNullOrWhiteSpace(Model.Address))
+    {
+        <span>(@Model.Address)</span>
+    }
+</p>
 <p><strong>Capacity:</strong> @Model.Capacity</p>
 <p><strong>Public:</strong> @(Model.IsPublic ? "Yes" : "No")</p>
 
 <hr />
 <p>@Model.Description</p>
+
+<hr />
+<h3>Comments</h3>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form asp-action="AddComment" method="post" class="mb-3">
+        <input type="hidden" name="EventId" value="@Model.Id" />
+
+        <textarea name="Content" class="form-control mb-2" rows="3" placeholder="Write a comment..."></textarea>
+
+        <button type="submit" class="btn btn-primary">Post</button>
+    </form>
+}
+else
+{
+    <p><a asp-controller="Account" asp-action="Login">Login</a> to comment.</p>
+}
+
+@if (Model.Comments.Any())
+{
+    @foreach (var c in Model.Comments)
+    {
+        <div class="border rounded p-2 mb-2 bg-light">
+            <strong>@c.UserName</strong>
+            <small class="text-muted float-end">
+                @c.CreatedOn.ToLocalTime().ToString("dd.MM.yyyy HH:mm")
+            </small>
+            <div>@c.Content</div>
+        </div>
+    }
+}
+else
+{
+    <p class="text-muted">No comments yet.</p>
+}
 
 @if (Model.IsOwner)
 {
