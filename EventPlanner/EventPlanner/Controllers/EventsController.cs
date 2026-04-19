@@ -73,6 +73,7 @@ public class EventsController : Controller
             .Include(e => e.Organizer)
             .Include(e => e.Comments)
                 .ThenInclude(c => c.User)
+            .Include(e => e.Ratings)
             .FirstOrDefaultAsync(e => e.Id == id);
 
         if (ev == null || (!ev.IsPublic && !User.Identity?.IsAuthenticated == true))
@@ -81,6 +82,7 @@ public class EventsController : Controller
         }
 
         var userId = userManager.GetUserId(User);
+        var currentUserId = userManager.GetUserId(User);
         var vm = new EventDetailsViewModel
         {
             Id = ev.Id,
@@ -96,6 +98,13 @@ public class EventsController : Controller
             Address = ev.Location.Address,
             OrganizerUserName = ev.Organizer.UserName ?? ev.Organizer.Email ?? "Unknown",
             IsOwner = userId != null && ev.OrganizerId == userId,
+
+            AverageRating = ev.Ratings.Any() ? ev.Ratings.Average(r => r.Value) : 0,
+            RatingsCount = ev.Ratings.Count,
+            UserRating =
+                currentUserId != null
+                    ? ev.Ratings.FirstOrDefault(r => r.UserId == currentUserId)?.Value
+                    : null,
 
             Comments = ev
                 .Comments.OrderByDescending(c => c.CreatedOn)
@@ -340,13 +349,23 @@ public class EventsController : Controller
             return RedirectToAction(nameof(Details), new { id = model.EventId });
         }
 
+        var eventExists = await db.Events.AnyAsync(e => e.Id == model.EventId);
+        if (!eventExists)
+        {
+            return NotFound();
+        }
+
         var userId = userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
 
         var comment = new Comment
         {
             EventId = model.EventId,
             UserId = userId!,
-            Content = model.Content,
+            Content = model.Content.Trim(),
             CreatedOn = DateTime.UtcNow,
         };
 

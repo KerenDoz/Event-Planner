@@ -21,6 +21,7 @@ public class ApplicationUser : IdentityUser
     public ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
     public ICollection<Event> CreatedEvents { get; set; } = new HashSet<Event>();
 
-    public ICollection<Review> Reviews { get; set; } = new HashSet<Review>();
+    public ICollection<EventRating> Ratings { get; set; } = new List<EventRating>();
+
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 }

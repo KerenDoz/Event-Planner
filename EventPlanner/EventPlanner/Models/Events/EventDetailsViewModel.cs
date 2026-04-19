@@ -20,4 +20,7 @@ public class EventDetailsViewModel
     public string OrganizerUserName { get; set; } = null!;
     public bool IsOwner { get; set; }
     public List<CommentViewModel> Comments { get; set; } = new();
+    public double AverageRating { get; set; }
+    public int RatingsCount { get; set; }
+    public int? UserRating { get; set; }
 }

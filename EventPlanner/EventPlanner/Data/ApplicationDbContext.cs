@@ -14,8 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Category> Categories { get; set; } = null!;
     public DbSet<Location> Locations { get; set; } = null!;
     public DbSet<Participant> Participants { get; set; } = null!;
-
-    //public DbSet<Review> Reviews { get; set; } = null!;
+    public DbSet<EventRating> EventRatings { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -46,5 +45,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             .WithMany(u => u.CreatedEvents)
             .HasForeignKey(e => e.OrganizerId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<EventRating>().HasIndex(r => new { r.EventId, r.UserId }).IsUnique();
     }
 }

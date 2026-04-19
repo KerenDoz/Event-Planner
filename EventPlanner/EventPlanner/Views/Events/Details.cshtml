@@ -25,6 +25,42 @@
 <hr />
 <h3>Comments</h3>
 
+<hr />
+<h3 class="mt-4">Rating</h3>
+
+<p>
+    <strong>Average rating:</strong>
+    @Model.AverageRating.ToString("0.0") / 5
+    (@Model.RatingsCount vote@(Model.RatingsCount == 1 ? "" : "s"))
+</p>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form asp-action="Rate" method="post" id="ratingForm" class="mb-3">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="EventId" value="@Model.Id" />
+        <input type="hidden" name="Value" id="ratingValue" value="@Model.UserRating" />
+
+        <div id="starContainer" class="mb-2" style="font-size: 2rem; cursor: pointer;">
+            @for (int i = 1; i <= 5; i++)
+            {
+                <span class="star" data-value="@i">&#9733;</span>
+            }
+        </div>
+
+        <button type="submit" class="btn btn-warning">Save Rating</button>
+    </form>
+
+    @if (Model.UserRating.HasValue)
+    {
+        <p class="text-muted">Your rating: @Model.UserRating / 5</p>
+    }
+}
+else
+{
+    <p class="text-muted">Please sign in to rate this event.</p>
+}
+
 @if (User.Identity?.IsAuthenticated == true)
 {
     <form asp-action="AddComment" method="post" class="mb-3">
@@ -64,3 +100,60 @@ else
     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
 }
 <a class="btn btn-secondary" asp-action="Index">Back</a>
+
+<style>
+    .star {
+        color: lightgray;
+        cursor: pointer;
+        transition: color 0.2s;
+    }
+
+    .star.selected {
+        color: gold;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const stars = document.querySelectorAll(".star");
+        const ratingInput = document.getElementById("ratingValue");
+
+        function highlightStars(value) {
+            stars.forEach(star => {
+                const starValue = parseInt(star.dataset.value);
+                if (starValue <= value) {
+                    star.classList.add("selected");
+                } else {
+                    star.classList.remove("selected");
+                }
+            });
+        }
+
+        // initial state
+        let currentValue = parseInt(ratingInput.value) || 0;
+        highlightStars(currentValue);
+
+        stars.forEach(star => {
+
+            star.addEventListener("mouseover", function () {
+                const value = parseInt(this.dataset.value);
+                highlightStars(value);
+            });
+
+            star.addEventListener("mouseout", function () {
+                highlightStars(parseInt(ratingInput.value) || 0);
+            });
+
+            star.addEventListener("click", function () {
+                const value = parseInt(this.dataset.value);
+                ratingInput.value = value;
+                highlightStars(value);
+
+                document.getElementById("ratingForm").submit();
+            });
+
+        });
+
+    });
+</script>
