@@ -5,21 +5,40 @@
 
 <h1>Events</h1>
 
-<form method="get" class="row g-2 mb-3">
-    <div class="col-md-4">
+<form method="get" class="row g-3 mb-3">
+    <div class="col-md-3">
         <input class="form-control" asp-for="Search" placeholder="Search by title..." />
     </div>
-    <div class="col-md-4">
+
+    <div class="col-md-3">
         <select class="form-select" asp-for="CategoryId" asp-items="Model.Categories">
             <option value="">All categories</option>
         </select>
     </div>
-    <div class="col-md-2 form-check align-self-center ms-2">
-        <input class="form-check-input" asp-for="UpcomingOnly" />
-        <label class="form-check-label" asp-for="UpcomingOnly">Upcoming only</label>
+
+    <div class="col-md-3">
+        <select class="form-select" asp-for="LocationId" asp-items="Model.Locations">
+            <option value="">All locations</option>
+        </select>
     </div>
-    <div class="col-md-2">
+
+    <div class="col-md-3">
+        <input class="form-control" asp-for="Date" type="date" />
+    </div>
+
+    <div class="col-md-3 d-flex align-items-center">
+        <div class="form-check mt-2">
+            <input class="form-check-input" asp-for="UpcomingOnly" />
+            <label class="form-check-label" asp-for="UpcomingOnly">Upcoming only</label>
+        </div>
+    </div>
+
+    <div class="col-md-3">
         <button class="btn btn-primary w-100" type="submit">Filter</button>
+    </div>
+
+    <div class="col-md-3">
+        <a class="btn btn-outline-secondary w-100" asp-action="Index">Clear</a>
     </div>
 </form>
 
@@ -39,17 +58,17 @@
         </tr>
     </thead>
     <tbody>
-    @foreach (var e in Model.Events)
-    {
-        <tr>
-            <td>@e.Title</td>
-            <td>@e.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
-            <td>@e.CategoryName</td>
-            <td>@e.City</td>
-            <td>
-                <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@e.Id">Details</a>
-            </td>
-        </tr>
-    }
+        @foreach (var e in Model.Events)
+        {
+            <tr>
+                <td>@e.Title</td>
+                <td>@e.StartDate.ToString("yyyy-MM-dd HH:mm")</td>
+                <td>@e.CategoryName</td>
+                <td>@e.City</td>
+                <td>
+                    <a class="btn btn-sm btn-outline-primary" asp-action="Details" asp-route-id="@e.Id">Details</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

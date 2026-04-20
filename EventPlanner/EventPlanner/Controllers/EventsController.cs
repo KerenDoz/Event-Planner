@@ -32,7 +32,7 @@ public class EventsController : Controller
             .Include(e => e.Category)
             .Include(e => e.Location);
 
-        if (query.UpcomingOnly && !query.Date.HasValue)
+        if (query.UpcomingOnly)
         {
             eventsQuery = eventsQuery.Where(e => e.StartDate >= DateTime.Now);
         }
@@ -46,15 +46,6 @@ public class EventsController : Controller
         if (query.CategoryId.HasValue)
         {
             eventsQuery = eventsQuery.Where(e => e.CategoryId == query.CategoryId.Value);
-        }
-
-        if (query.Date.HasValue)
-        {
-            var selectedDate = query.Date.Value.Date;
-            var nextDate = selectedDate.AddDays(1);
-
-            eventsQuery = eventsQuery
-                .Where(e => e.StartDate >= selectedDate && e.StartDate < nextDate);
         }
 
         query.Events = await eventsQuery
