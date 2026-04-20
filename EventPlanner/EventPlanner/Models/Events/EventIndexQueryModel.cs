@@ -8,6 +8,9 @@ public class EventIndexQueryModel
     public int? CategoryId { get; set; }
     public bool UpcomingOnly { get; set; } = true;
 
+    [DataType(DataType.Date)]
+    public DateTime? Date { get; set; }
+
     public IEnumerable<SelectListItem> Categories { get; set; } = Enumerable.Empty<SelectListItem>();
     public IEnumerable<EventListItemViewModel> Events { get; set; } = Enumerable.Empty<EventListItemViewModel>();
 }

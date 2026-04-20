@@ -6,11 +6,11 @@ namespace EventPlanner.Models.Events;
 public class EventFormModel : IValidatableObject
 {
     [Required]
-    [StringLength(80, MinimumLength = 5)]
+    [StringLength(100, MinimumLength = 3)]
     public string Title { get; set; } = null!;
 
     [Required]
-    [StringLength(800, MinimumLength = 20)]
+    [StringLength(1000, MinimumLength = 5)]
     public string Description { get; set; } = null!;
 
     [Required]

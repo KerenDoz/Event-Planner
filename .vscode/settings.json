@@ -1,6 +1,6 @@
 {
   "[csharp]": {
-    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
   },
   "dotnet.preferCSharpExtension": true
 }
