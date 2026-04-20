@@ -14,13 +14,16 @@
     <!-- Events -->
     <div class="col">
         <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
+            <div class="card-body text-center d-flex flex-column">
+
+                <i class="bi bi-calendar-event display-5 text-primary mb-2"></i>
+
                 <h5 class="card-title">Events</h5>
-                <p class="card-text">
+                <p class="card-text flex-grow-1">
                     Browse all public upcoming events.
                 </p>
-                <a asp-controller="Events" asp-action="Index"
-                   class="btn btn-primary w-100">
+
+                <a asp-controller="Events" asp-action="Index" class="btn btn-primary w-100 mt-auto">
                     View Events
                 </a>
             </div>
@@ -30,22 +33,24 @@
     <!-- My Events -->
     <div class="col">
         <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
+            <div class="card-body text-center d-flex flex-column">
+
+                <i class="bi bi-calendar-check display-5 text-success mb-2"></i>
+
                 <h5 class="card-title">My Events</h5>
-                <p class="card-text">
+                <p class="card-text flex-grow-1">
                     Manage the events you have created.
                 </p>
 
                 @if (User.Identity?.IsAuthenticated == true)
                 {
-                    <a asp-controller="Events" asp-action="MyEvents"
-                       class="btn btn-success w-100">
+                    <a asp-controller="Events" asp-action="MyEvents" class="btn btn-success w-100 mt-auto">
                         My Events
                     </a>
                 }
                 else
                 {
-                    <a asp-controller="Account" asp-action="Login"       class="btn btn-outline-success w-100">
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-success w-100 mt-auto">
                         Login to view
                     </a>
                 }
@@ -56,13 +61,16 @@
     <!-- Locations -->
     <div class="col">
         <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
+            <div class="card-body text-center d-flex flex-column">
+
+                <i class="bi bi-geo-alt display-5 text-secondary mb-2"></i>
+
                 <h5 class="card-title">Locations</h5>
-                <p class="card-text">
+                <p class="card-text flex-grow-1">
                     View and manage event locations.
                 </p>
-                <a asp-controller="Locations" asp-action="Index"
-                   class="btn btn-secondary w-100">
+
+                <a asp-controller="Locations" asp-action="Index" class="btn btn-secondary w-100 mt-auto">
                     Locations
                 </a>
             </div>
@@ -72,13 +80,16 @@
     <!-- Categories -->
     <div class="col">
         <div class="card h-100 shadow-sm">
-            <div class="card-body text-center">
+            <div class="card-body text-center d-flex flex-column">
+
+                <i class="bi bi-tags display-5 text-dark mb-2"></i>
+
                 <h5 class="card-title">Categories</h5>
-                <p class="card-text">
+                <p class="card-text flex-grow-1">
                     Manage event types and categories.
                 </p>
-                <a asp-controller="Categories" asp-action="Index"
-                   class="btn btn-dark w-100">
+
+                <a asp-controller="Categories" asp-action="Index" class="btn btn-dark w-100 mt-auto">
                     Categories
                 </a>
             </div>
@@ -86,13 +97,3 @@
     </div>
 
 </div>
-
-
-@* @{
-    ViewData["Title"] = "Home Page";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div> *@

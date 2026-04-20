@@ -78,6 +78,22 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
+.card-title {
+  min-height: 2.5rem;
+}
+
+.card-text {
+  margin-bottom: 1rem;
+}
+
+.card i {
+  font-size: 2.5rem;
+}
+
+.card i {
+  font-size: 40px;
+}
+
 .navbar form {
   margin: 0;
 }
