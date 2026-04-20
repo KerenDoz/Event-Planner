@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using EventPlanner.Data;
 using EventPlanner.Data.Models;
 using EventPlanner.Models.Comments;
@@ -51,8 +52,7 @@ public class EventsController : Controller
 
         if (!string.IsNullOrWhiteSpace(query.City))
         {
-            eventsQuery = eventsQuery
-                .Where(e => e.Location.City == query.City);
+            eventsQuery = eventsQuery.Where(e => e.Location.City == query.City);
         }
 
         query.Events = await eventsQuery
@@ -67,13 +67,14 @@ public class EventsController : Controller
             })
             .ToListAsync();
 
-
         return View(query);
     }
 
     // PUBLIC: Details
     public async Task<IActionResult> Details(int id)
     {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
         var ev = await db
             .Events.AsNoTracking()
             .Include(e => e.Category)
@@ -82,6 +83,7 @@ public class EventsController : Controller
             .Include(e => e.Comments)
                 .ThenInclude(c => c.User)
             .Include(e => e.Ratings)
+            .Include(e => e.Tickets)
             .FirstOrDefaultAsync(e => e.Id == id);
 
         if (ev == null || (!ev.IsPublic && !User.Identity?.IsAuthenticated == true))
@@ -89,8 +91,9 @@ public class EventsController : Controller
             return NotFound();
         }
 
-        var userId = userManager.GetUserId(User);
+        //var userId = userManager.GetUserId(User);
         var currentUserId = userManager.GetUserId(User);
+
         var vm = new EventDetailsViewModel
         {
             Id = ev.Id,
@@ -416,15 +419,11 @@ public class EventsController : Controller
     private Task<bool> LocationExists(int id) => db.Locations.AnyAsync(l => l.Id == id);
 
     private async Task<IEnumerable<SelectListItem>> GetCitySelectListAsync() =>
-        await db.Locations
-            .AsNoTracking()
+        await db
+            .Locations.AsNoTracking()
             .Select(l => l.City)
             .Distinct()
             .OrderBy(c => c)
-            .Select(c => new SelectListItem
-            {
-                Value = c,
-                Text = c
-            })
+            .Select(c => new SelectListItem { Value = c, Text = c })
             .ToListAsync();
 }

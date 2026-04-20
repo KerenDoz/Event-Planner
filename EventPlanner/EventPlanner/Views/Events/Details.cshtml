@@ -34,6 +34,26 @@
     (@Model.RatingsCount vote@(Model.RatingsCount == 1 ? "" : "s"))
 </p>
 
+<p><strong>Participants:</strong> @Model.TicketsCount</p>
+
+@if (User.Identity?.IsAuthenticated == true)
+{
+    if (!Model.IsJoined)
+    {
+        <form asp-controller="Tickets" asp-action="Join" method="post">
+            <input type="hidden" name="eventId" value="@Model.Id" />
+            <button class="btn btn-success">Join Event</button>
+        </form>
+    }
+    else
+    {
+        <form asp-controller="Tickets" asp-action="Leave" method="post">
+            <input type="hidden" name="eventId" value="@Model.Id" />
+            <button class="btn btn-danger">Leave Event</button>
+        </form>
+    }
+}
+
 @if (User.Identity?.IsAuthenticated == true)
 {
     <form asp-action="Rate" method="post" id="ratingForm" class="mb-3">

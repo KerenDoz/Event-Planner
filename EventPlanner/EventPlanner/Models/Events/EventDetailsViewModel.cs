@@ -23,4 +23,7 @@ public class EventDetailsViewModel
     public double AverageRating { get; set; }
     public int RatingsCount { get; set; }
     public int? UserRating { get; set; }
+    public int TicketsCount { get; set; }
+
+    public bool IsJoined { get; set; }
 }
