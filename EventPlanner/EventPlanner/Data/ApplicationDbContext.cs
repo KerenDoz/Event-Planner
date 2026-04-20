@@ -1,4 +1,3 @@
-//using System.Reflection.Emit;
 using EventPlanner.Data.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;

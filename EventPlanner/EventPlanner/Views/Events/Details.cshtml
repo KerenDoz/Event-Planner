@@ -56,19 +56,22 @@
 
 @if (User.Identity?.IsAuthenticated == true)
 {
-    <form asp-action="Rate" method="post" id="ratingForm" class="mb-3">
+    <form id="ratingForm" asp-action="Rate" method="post">
         @Html.AntiForgeryToken()
-        <input type="hidden" name="EventId" value="@Model.Id" />
-        <input type="hidden" name="Value" id="ratingValue" value="@Model.UserRating" />
 
-        <div id="starContainer" class="mb-2" style="font-size: 2rem; cursor: pointer;">
+        <input type="hidden" name="eventId" value="@Model.Id" />
+        <input type="hidden" name="value" id="ratingValue" value="@Model.UserRating" />
+
+        <div id="rating">
             @for (int i = 1; i <= 5; i++)
             {
-                <span class="star" data-value="@i">&#9733;</span>
+                <span class="star" data-value="@i" style="cursor:pointer; font-size:1.5rem;">
+                    ★
+                </span>
             }
         </div>
 
-        <button type="submit" class="btn btn-warning">Save Rating</button>
+        @*<button type="submit" class="btn btn-warning">Save Rating</button>*@
     </form>
 
     @if (Model.UserRating.HasValue)
@@ -84,7 +87,7 @@ else
 @if (User.Identity?.IsAuthenticated == true)
 {
     <form asp-action="AddComment" method="post" class="mb-3">
-        <input type="hidden" name="EventId" value="@Model.Id" />
+        <input type="hidden" name="eventId" value="@Model.Id" />
 
         <textarea name="Content" class="form-control mb-2" rows="3" placeholder="Write a comment..."></textarea>
 
@@ -134,46 +137,29 @@ else
 </style>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    const stars = document.querySelectorAll('#rating .star');
+    const ratingValue = document.getElementById('ratingValue');
+    const form = document.getElementById('ratingForm');
 
-        const stars = document.querySelectorAll(".star");
-        const ratingInput = document.getElementById("ratingValue");
-
-        function highlightStars(value) {
-            stars.forEach(star => {
-                const starValue = parseInt(star.dataset.value);
-                if (starValue <= value) {
-                    star.classList.add("selected");
-                } else {
-                    star.classList.remove("selected");
-                }
-            });
-        }
-
-        // initial state
-        let currentValue = parseInt(ratingInput.value) || 0;
-        highlightStars(currentValue);
-
-        stars.forEach(star => {
-
-            star.addEventListener("mouseover", function () {
-                const value = parseInt(this.dataset.value);
-                highlightStars(value);
-            });
-
-            star.addEventListener("mouseout", function () {
-                highlightStars(parseInt(ratingInput.value) || 0);
-            });
-
-            star.addEventListener("click", function () {
-                const value = parseInt(this.dataset.value);
-                ratingInput.value = value;
-                highlightStars(value);
-
-                document.getElementById("ratingForm").submit();
-            });
-
+    function highlight(val) {
+        stars.forEach(s => {
+            const v = parseInt(s.getAttribute('data-value'));
+            s.style.color = v <= val ? '#fbbf24' : '#d1d5db';
         });
+    }
 
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const val = parseInt(star.getAttribute('data-value'));
+            ratingValue.value = val;
+            highlight(val);
+
+            // 🔥 AUTO SUBMIT
+            form.submit();
+        });
     });
+
+    // initial highlight
+    highlight(parseInt(ratingValue.value) || 0);
 </script>
+

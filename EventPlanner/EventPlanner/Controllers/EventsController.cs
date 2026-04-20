@@ -73,8 +73,6 @@ public class EventsController : Controller
     // PUBLIC: Details
     public async Task<IActionResult> Details(int id)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
         var ev = await db
             .Events.AsNoTracking()
             .Include(e => e.Category)
@@ -86,12 +84,11 @@ public class EventsController : Controller
             .Include(e => e.Tickets)
             .FirstOrDefaultAsync(e => e.Id == id);
 
-        if (ev == null || (!ev.IsPublic && !User.Identity?.IsAuthenticated == true))
+        if (ev == null || (!ev.IsPublic && User.Identity?.IsAuthenticated != true))
         {
             return NotFound();
         }
 
-        //var userId = userManager.GetUserId(User);
         var currentUserId = userManager.GetUserId(User);
 
         var vm = new EventDetailsViewModel
@@ -108,17 +105,19 @@ public class EventsController : Controller
             City = ev.Location.City,
             Address = ev.Location.Address,
             OrganizerUserName = ev.Organizer.UserName ?? ev.Organizer.Email ?? "Unknown",
-            IsOwner = userId != null && ev.OrganizerId == userId,
+            IsOwner = currentUserId != null && ev.OrganizerId == currentUserId,
 
             AverageRating = ev.Ratings.Any() ? ev.Ratings.Average(r => r.Value) : 0,
             RatingsCount = ev.Ratings.Count,
-            UserRating =
-                currentUserId != null
-                    ? ev.Ratings.FirstOrDefault(r => r.UserId == currentUserId)?.Value
-                    : null,
+            UserRating = currentUserId != null
+                ? ev.Ratings.FirstOrDefault(r => r.UserId == currentUserId)?.Value
+                : null,
 
-            Comments = ev
-                .Comments.OrderByDescending(c => c.CreatedOn)
+            TicketsCount = ev.Tickets.Count,
+            IsJoined = currentUserId != null && ev.Tickets.Any(t => t.UserId == currentUserId),
+
+            Comments = ev.Comments
+                .OrderByDescending(c => c.CreatedOn)
                 .Select(c => new CommentViewModel
                 {
                     Id = c.Id,
@@ -384,6 +383,53 @@ public class EventsController : Controller
         await db.SaveChangesAsync();
 
         return RedirectToAction(nameof(Details), new { id = model.EventId });
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Rate(int eventId, int value)
+    {
+        if (value < 1 || value > 5)
+        {
+            return RedirectToAction(nameof(Details), new { id = eventId });
+        }
+
+        var userId = userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Challenge();
+        }
+
+        var evExists = await db.Events.AnyAsync(e => e.Id == eventId);
+        if (!evExists)
+        {
+            return NotFound();
+        }
+
+        var rating = await db.EventRatings.FirstOrDefaultAsync(r =>
+            r.EventId == eventId && r.UserId == userId
+        );
+
+        if (rating == null)
+        {
+            rating = new EventRating
+            {
+                EventId = eventId,
+                UserId = userId,
+                Value = value
+            };
+
+            db.EventRatings.Add(rating);
+        }
+        else
+        {
+            rating.Value = value;
+        }
+
+        await db.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Details), new { id = eventId });
     }
 
     // ---------------- Helpers ----------------
