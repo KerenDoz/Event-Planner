@@ -16,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<Participant> Participants { get; set; } = null!;
     public DbSet<EventRating> EventRatings { get; set; } = null!;
     public DbSet<Comment> Comments { get; set; } = null!;
+    public DbSet<Ticket> Tickets { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

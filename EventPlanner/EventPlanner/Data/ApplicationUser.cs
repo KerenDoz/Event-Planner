@@ -7,21 +7,11 @@ namespace EventPlanner.Data;
 
 public class ApplicationUser : IdentityUser
 {
-    // [Required]
-    // [StringLength(50, MinimumLength = 2)]
-    // public string FirstName { get; set; } = null!;
-
-    // [Required]
-    // [StringLength(50, MinimumLength = 2)]
-    // public string LastName { get; set; } = null!;
-
-    // [NotMapped]
-    // public string FullName => $"{FirstName} {LastName}";
-
     public ICollection<Participant> Participants { get; set; } = new HashSet<Participant>();
     public ICollection<Event> CreatedEvents { get; set; } = new HashSet<Event>();
 
     public ICollection<EventRating> Ratings { get; set; } = new List<EventRating>();
 
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 }
