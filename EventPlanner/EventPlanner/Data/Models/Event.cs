@@ -11,11 +11,11 @@ public class Event : IValidatableObject
     public int Id { get; set; }
 
     [Required]
-    [StringLength(100, MinimumLength = 5)]
+    [StringLength(100, MinimumLength = 3, ErrorMessage = "Title must be between 3 and 50 characters.")]
     public string Title { get; set; } = null!;
 
     [Required]
-    [StringLength(1000, MinimumLength = 20)]
+    [StringLength(1000, MinimumLength = 5, ErrorMessage = "Description must be more than 5 characters.")]
     public string Description { get; set; } = null!;
 
     [Required]
