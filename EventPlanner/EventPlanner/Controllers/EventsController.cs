@@ -25,6 +25,7 @@ public class EventsController : Controller
     public async Task<IActionResult> Index([FromQuery] EventIndexQueryModel query)
     {
         query.Categories = await GetCategorySelectListAsync();
+        query.Cities = await GetCitySelectListAsync();
 
         IQueryable<EventPlanner.Data.Models.Event> eventsQuery = db
             .Events.AsNoTracking()
@@ -48,6 +49,12 @@ public class EventsController : Controller
             eventsQuery = eventsQuery.Where(e => e.CategoryId == query.CategoryId.Value);
         }
 
+        if (!string.IsNullOrWhiteSpace(query.City))
+        {
+            eventsQuery = eventsQuery
+                .Where(e => e.Location.City == query.City);
+        }
+
         query.Events = await eventsQuery
             .OrderBy(e => e.StartDate)
             .Select(e => new EventListItemViewModel
@@ -59,6 +66,7 @@ public class EventsController : Controller
                 City = e.Location.City,
             })
             .ToListAsync();
+
 
         return View(query);
     }
@@ -406,4 +414,17 @@ public class EventsController : Controller
 
     // Is this LocationId actually in the database?
     private Task<bool> LocationExists(int id) => db.Locations.AnyAsync(l => l.Id == id);
+
+    private async Task<IEnumerable<SelectListItem>> GetCitySelectListAsync() =>
+        await db.Locations
+            .AsNoTracking()
+            .Select(l => l.City)
+            .Distinct()
+            .OrderBy(c => c)
+            .Select(c => new SelectListItem
+            {
+                Value = c,
+                Text = c
+            })
+            .ToListAsync();
 }

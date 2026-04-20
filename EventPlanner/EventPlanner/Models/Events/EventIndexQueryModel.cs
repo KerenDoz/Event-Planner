@@ -11,6 +11,8 @@ public class EventIndexQueryModel
 
     public int? LocationId { get; set; }
 
+    public string? City { get; set; }
+
     public bool UpcomingOnly { get; set; } = true;
 
     [DataType(DataType.Date)]
@@ -21,4 +23,6 @@ public class EventIndexQueryModel
     public IEnumerable<SelectListItem> Locations { get; set; } = Enumerable.Empty<SelectListItem>();
 
     public IEnumerable<EventListItemViewModel> Events { get; set; } = Enumerable.Empty<EventListItemViewModel>();
+
+    public IEnumerable<SelectListItem> Cities { get; set; } = Enumerable.Empty<SelectListItem>();
 }

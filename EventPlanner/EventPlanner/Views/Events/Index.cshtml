@@ -16,9 +16,15 @@
         </select>
     </div>
 
-    <div class="col-md-3">
+    @* <div class="col-md-3">
         <select class="form-select" asp-for="LocationId" asp-items="Model.Locations">
             <option value="">All locations</option>
+        </select>
+    </div> *@
+
+    <div class="col-md-3">
+        <select class="form-select" asp-for="City" asp-items="Model.Cities">
+            <option value="">All cities</option>
         </select>
     </div>
 
