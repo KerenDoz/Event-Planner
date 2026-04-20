@@ -1,11 +1,11 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus,
@@ -13,91 +13,301 @@ html {
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 /* ===== Background ===== */
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 
-  background:
-    radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.18), transparent 40%),
-    radial-gradient(circle at 85% 20%, rgba(16, 185, 129, 0.18), transparent 45%),
-    radial-gradient(circle at 30% 85%, rgba(236, 72, 153, 0.14), transparent 45%),
-    linear-gradient(180deg, #f8fafc 0%, #ffffff 60%);
-  background-attachment: fixed;
+    background:
+        radial-gradient(circle at 10% 15%, rgba(99, 102, 241, 0.18), transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(16, 185, 129, 0.18), transparent 45%),
+        radial-gradient(circle at 30% 85%, rgba(236, 72, 153, 0.14), transparent 45%),
+        linear-gradient(180deg, #f8fafc 0%, #ffffff 60%);
+    background-attachment: fixed;
 }
 
 /* Main content glass panel */
 .container main {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(8px);
-  border-radius: 16px;
-  padding: 1.5rem;
-  border: 1px solid rgba(15, 23, 42, 0.06);
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 1.5rem;
+    border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 /* Navbar glass look */
 .navbar {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(10px);
 }
 
 /* Cards polish */
 .card {
-  border-radius: 16px;
-  border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 16px;
+    border: 1px solid rgba(15, 23, 42, 0.06);
 }
 
 /* Buttons feel a bit nicer */
 .btn {
-  border-radius: 10px;
+    border-radius: 10px;
 }
 
 /* Home title */
 .display-5 {
-  font-weight: 700;
-  letter-spacing: -0.5px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
 }
 
 .card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 .card-title {
-  min-height: 2.5rem;
+    min-height: 2.5rem;
 }
 
 .card-text {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 .card i {
-  font-size: 2.5rem;
+    font-size: 2.5rem;
 }
 
 .card i {
-  font-size: 40px;
+    font-size: 40px;
 }
 
 .navbar form {
-  margin: 0;
+    margin: 0;
 }
 
 .navbar button.nav-link {
-  line-height: 1.5;
+    line-height: 1.5;
+}
+
+/* DARK MODE */
+[data-theme="dark"] {
+    background-color: #121212;
+    color: #e4e4e4;
+}
+
+/* Navbar */
+[data-theme="dark"] .navbar {
+    background-color: #1f1f1f !important;
+}
+
+/* Cards */
+[data-theme="dark"] .card {
+    background-color: #1e1e1e;
+    color: #fff;
+    border-color: #333;
+}
+
+/* Buttons */
+[data-theme="dark"] .btn-primary {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+[data-theme="dark"] .btn-success {
+    background-color: #22c55e;
+}
+
+[data-theme="dark"] .btn-dark {
+    background-color: #444;
+}
+
+/* Inputs */
+[data-theme="dark"] input,
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+    background-color: #2a2a2a;
+    color: #fff;
+    border: 1px solid #444;
+}
+
+/* Footer */
+[data-theme="dark"] footer {
+    background-color: #1a1a1a;
+    color: #aaa;
+}
+
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.card {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+[data-theme="dark"] body,
+body[data-theme="dark"] {
+    background:
+        radial-gradient(circle at 10% 15%, rgba(79, 70, 229, 0.18), transparent 35%),
+        radial-gradient(circle at 85% 20%, rgba(5, 150, 105, 0.18), transparent 40%),
+        radial-gradient(circle at 30% 85%, rgba(190, 24, 93, 0.14), transparent 40%),
+        linear-gradient(180deg, #0f172a 0%, #111827 60%);
+    background-attachment: fixed;
+    color: #e5e7eb;
+}
+
+body[data-theme="dark"] .container main {
+    background: rgba(17, 24, 39, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #e5e7eb;
+}
+
+body[data-theme="dark"] .navbar .navbar-brand,
+body[data-theme="dark"] .navbar .nav-link,
+body[data-theme="dark"] .navbar .navbar-text,
+body[data-theme="dark"] .navbar button.nav-link {
+    color: #f3f4f6 !important;
+}
+
+body[data-theme="dark"] .footer,
+body[data-theme="dark"] footer {
+    background: transparent;
+    color: #9ca3af;
+}
+
+/* FORCE TEXT COLOR IN DARK MODE */
+body[data-theme="dark"] {
+    color: #e5e7eb;
+}
+
+/* Всички текстове вътре */
+body[data-theme="dark"] * {
+    color: inherit;
+}
+
+/* text-dark */
+body[data-theme="dark"] .text-dark {
+    color: #e5e7eb !important;
+}
+
+/* text-muted */
+body[data-theme="dark"] .text-muted {
+    color: #9ca3af !important;
+}
+
+/* headings */
+body[data-theme="dark"] h1,
+body[data-theme="dark"] h2,
+body[data-theme="dark"] h3,
+body[data-theme="dark"] h4,
+body[data-theme="dark"] h5,
+body[data-theme="dark"] h6 {
+    color: #f9fafb;
+}
+
+body[data-theme="dark"] .card {
+    background-color: #1f2937;
+    color: #e5e7eb;
+}
+
+body[data-theme="dark"] .card-title {
+    color: #f9fafb;
+}
+
+body[data-theme="dark"] .card-text {
+    color: #d1d5db;
+}
+
+body[data-theme="dark"] .navbar {
+    background-color: #111827 !important;
+}
+
+body[data-theme="dark"] .navbar .nav-link,
+body[data-theme="dark"] .navbar .navbar-brand {
+    color: #f3f4f6 !important;
+}
+
+/* TABLE DARK MODE */
+body[data-theme="dark"] table {
+    color: #e5e7eb;
+}
+
+body[data-theme="dark"] thead {
+    color: #f9fafb;
+}
+
+body[data-theme="dark"] tbody tr {
+    color: #e5e7eb;
+}
+
+/* alternating rows */
+body[data-theme="dark"] tbody tr:nth-child(even) {
+    background-color: #1f2937;
+}
+
+body[data-theme="dark"] tbody tr:nth-child(odd) {
+    background-color: #111827;
+}
+
+body[data-theme="dark"] .table {
+    color: #e5e7eb;
+    background-color: transparent;
+}
+
+body[data-theme="dark"] .table th {
+    color: #f9fafb;
+}
+
+body[data-theme="dark"] .table td {
+    color: #e5e7eb;
+}
+
+body[data-theme="dark"] .table-striped>tbody>tr:nth-of-type(odd) {
+    background-color: #111827;
+}
+
+body[data-theme="dark"] li {
+    color: #e5e7eb;
+}
+
+body[data-theme="dark"] .list-group-item {
+    background-color: #1f2937;
+    color: #e5e7eb;
+    border-color: #374151;
+}
+
+body[data-theme="dark"] .btn {
+    color: #fff;
+}
+
+body[data-theme="dark"] th {
+    color: #f9fafb;
+}
+
+body[data-theme="dark"] input,
+body[data-theme="dark"] textarea,
+body[data-theme="dark"] select {
+    background-color: #1f2937;
+    color: #fff;
+    border-color: #374151;
+}
+
+.navbar .nav-link i {
+    vertical-align: middle;
+}
+
+.navbar .btn-link {
+    text-decoration: none;
 }
