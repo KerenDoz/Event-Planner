@@ -1,0 +1,22 @@
+@model List<EventPlanner.Data.ApplicationUser>
+
+<h2>Users</h2>
+
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                <a asp-action="Suspend" asp-route-id="@user.Id">Suspend 30d</a> |
+                <a asp-action="SuspendPermanent" asp-route-id="@user.Id">Permanent</a> |
+                <a asp-action="Unsuspend" asp-route-id="@user.Id">Unsuspend</a>
+            </td>
+        </tr>
+    }
+</table>

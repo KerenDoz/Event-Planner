@@ -16,24 +16,31 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 );
 
 // Identity (cookie auth)
-builder
-    .Services.AddDefaultIdentity<ApplicationUser>(options =>
-    {
-        options.SignIn.RequireConfirmedAccount = false;
+// builder
+//     .Services.AddDefaultIdentity<ApplicationUser>(options =>
+//     {
+//         options.SignIn.RequireConfirmedAccount = false;
 
-        // Password rules
-        options.Password.RequireDigit = false;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.Password.RequiredLength = 6;
-    })
-    .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+//         // Password rules
+//         options.Password.RequireDigit = false;
+//         options.Password.RequireLowercase = false;
+//         options.Password.RequireUppercase = false;
+//         options.Password.RequireNonAlphanumeric = false;
+//         options.Password.RequiredLength = 6;
+//     })
+//     .AddRoles<IdentityRole>()
+//     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 // MVC + Identity UI pages
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Lockout.AllowedForNewUsers = true;
+})
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddDefaultTokenProviders();
 
 var app = builder.Build();
 

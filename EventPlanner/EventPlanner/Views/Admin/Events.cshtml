@@ -1,0 +1,15 @@
+@model List<EventPlanner.Data.Models.Event>
+
+<h2>Events</h2>
+
+<table class="table">
+    @foreach (var ev in Model)
+    {
+        <tr>
+            <td>@ev.Title</td>
+            <td>
+                <a asp-action="DeleteEvent" asp-route-id="@ev.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>
