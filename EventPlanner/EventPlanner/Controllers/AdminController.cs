@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using EventPlanner.Data;
 using EventPlanner.Data.Models;
+using Microsoft.EntityFrameworkCore;
 
 [Authorize(Roles = "Administrator")]
 public class AdminController : Controller
@@ -21,7 +22,7 @@ public class AdminController : Controller
         return View();
     }
 
-    // -------- USERS --------
+    //  USERS 
     public IActionResult Users()
     {
         var users = userManager.Users.ToList();
@@ -58,7 +59,7 @@ public class AdminController : Controller
         return RedirectToAction(nameof(Users));
     }
 
-    // -------- EVENTS --------
+    //  EVENTS 
     public IActionResult Events()
     {
         var events = context.Events.ToList();
@@ -69,13 +70,18 @@ public class AdminController : Controller
     {
         var ev = await context.Events.FindAsync(id);
 
+        if (ev == null)
+        {
+            return NotFound();
+        }
+
         context.Events.Remove(ev);
         await context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Events));
     }
 
-    // -------- CATEGORIES --------
+    //  CATEGORIES 
     public IActionResult Categories()
     {
         var categories = context.Categories.ToList();
@@ -86,13 +92,25 @@ public class AdminController : Controller
     {
         var category = await context.Categories.FindAsync(id);
 
+        if (category == null)
+        {
+            return NotFound();
+        }
+
+        bool isUsed = await context.Events.AnyAsync(e => e.CategoryId == id);
+        if (isUsed)
+        {
+            TempData["ErrorMessage"] = "Category cannot be deleted because it is used by existing events.";
+            return RedirectToAction(nameof(Categories));
+        }
+
         context.Categories.Remove(category);
         await context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Categories));
     }
 
-    // -------- LOCATIONS --------
+    //  LOCATIONS 
     public IActionResult Locations()
     {
         var locations = context.Locations.ToList();
@@ -102,6 +120,18 @@ public class AdminController : Controller
     public async Task<IActionResult> DeleteLocation(int id)
     {
         var location = await context.Locations.FindAsync(id);
+
+        if (location == null)
+        {
+            return NotFound();
+        }
+
+        bool isUsed = await context.Events.AnyAsync(e => e.LocationId == id);
+        if (isUsed)
+        {
+            TempData["ErrorMessage"] = "Location cannot be deleted because it is used by existing events.";
+            return RedirectToAction(nameof(Locations));
+        }
 
         context.Locations.Remove(location);
         await context.SaveChangesAsync();
