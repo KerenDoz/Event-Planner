@@ -126,16 +126,17 @@ public class AccountController : Controller
     [Authorize]
     public async Task<IActionResult> Manage()
     {
-        // var user = await userManager.GetUserAsync(User);
-        // if (user == null) return RedirectToAction(nameof(Login));
+        var user = await userManager.GetUserAsync(User);
+        if (user == null)
+            return RedirectToAction(nameof(Login));
 
-        // var model = new ManageViewModel
-        // {
-        //     Username = user.UserName ?? "",
-        //     Email = user.Email ?? ""
-        // };
+        var model = new ManageViewModel
+        {
+            Username = user.UserName ?? string.Empty,
+            Email = user.Email ?? string.Empty,
+        };
 
-        return View(); // return View(model)
+        return View(model);
     }
 
     [Authorize]

@@ -1,6 +1,5 @@
 @using EventPlanner.Data
 @using Microsoft.AspNetCore.Identity
-@using EventPlanner.Data.Models
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
@@ -8,48 +7,34 @@
 
     @if (SignInManager.IsSignedIn(User))
     {
-        <!-- PROFILE -->
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center" asp-controller="Account" asp-action="Manage" title="Profile">
-
-                <i class="bi bi-person-circle fs-5"></i>
+            <a class="nav-link" asp-controller="Account" asp-action="Manage" title="My Account">
+                Account
             </a>
         </li>
 
-        <!-- LOGOUT -->
         <li class="nav-item">
-            <form asp-controller="Account" asp-action="Logout" method="post">
-
-                <button type="submit" class="nav-link btn btn-link border-0 d-flex align-items-center" title="Logout">
-
-                    <i class="bi bi-box-arrow-right fs-5"></i>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="m-0">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="nav-link btn btn-link border-0 p-0" title="Logout">
+                    Logout
                 </button>
             </form>
         </li>
     }
     else
     {
-        <!-- LOGIN -->
         <li class="nav-item">
             <a class="nav-link" asp-controller="Account" asp-action="Login">
                 Login
             </a>
         </li>
 
-        <!-- REGISTER -->
         <li class="nav-item">
             <a class="nav-link" asp-controller="Account" asp-action="Register">
                 Register
             </a>
         </li>
     }
-
-    <!-- THEME TOGGLE -->
-    <li class="nav-item">
-        <button id="themeToggle" class="btn btn-link nav-link border-0 d-flex align-items-center" title="Toggle theme">
-
-            🌙
-        </button>
-    </li>
 
 </ul>
