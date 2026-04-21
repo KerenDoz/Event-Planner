@@ -1,112 +1,82 @@
-# EventPlanner
+# 🎉 EventPlanner
 
-EventPlanner is an ASP.NET Core MVC web application for creating, managing, and exploring events.
-The project was developed as part of the **SoftUni ASP.NET Fundamentals** course.
-
----
-
-## 📌 Project Description
-
-EventPlanner allows registered users to create events with categories and locations,
-manage their own events, browse public upcoming events, and interact with events through comments,
-ratings, and event participation.
-The application includes authentication, authorization, account management, administration features,
-and custom error pages.
+> A modern ASP.NET Core MVC web application for creating, managing, and exploring events.
 
 ---
 
-## ✨ Current Features
+## 📖 Overview
 
+EventPlanner is a full-featured event management platform developed as part of the **SoftUni ASP.NET Fundamentals** course.
+
+The application allows users to create and manage events, interact with other users, and explore upcoming public events through a clean and intuitive interface.
+
+---
+
+## ✨ Features
+
+### 🔐 Authentication & Account Management
 - User registration and login
 - Separate username and email
-- Account management:
-  - Change username
-  - Change email
-  - Change password
+- Change username, email, and password
+
+### 📅 Event Management
 - Create, edit, and delete events
 - Public and private events
-- View personal events (**My Events**)
-- Join and leave events
-- Event comments
-- Event rating system
-- Event categories management
-- Event locations management
-- Authorization:
-  - Only creators can edit/delete their events
-- Administrator panel:
-  - View users
-  - Suspend / unsuspend users
-  - Manage events, categories, and locations
-- Custom error pages:
-  - 400 Bad Request
-  - 404 Not Found
-  - 500 Internal Server Error
-- Unit tests for key application logic
-- Responsive UI with Bootstrap
+- Event categories and locations
+- "My Events" dashboard
+
+### 🤝 User Interaction
+- Join / Leave events
+- Event ratings system
+- Comments section for events
+
+### 🎟 Tickets System
+- Track event participation
+- Dynamic join/leave updates
+
+### 🛡 Authorization
+- Only event creators can edit/delete their events
+- Role-based access (Admin panel)
+
+### ⚙ Admin Panel
+- Manage categories
+- Manage locations
+- Full control over system data
+
+### ❗ Error Handling
+- Custom **404 Not Found** page
+- Custom **500 Server Error** page
+- Full validation (client + server)
+
+### 🧪 Testing
+- Unit tests for controllers and business logic
+- Coverage targeting 65%+ of logic
 
 ---
 
-## 🛠 Technologies Used
+## 🛠 Technologies
 
 - ASP.NET Core MVC (.NET 8)
 - Entity Framework Core
 - ASP.NET Core Identity
-- SQL Server
-- Bootstrap
-- HTML / CSS / Razor
-- xUnit
+- SQL Server (Docker supported)
+- Bootstrap 5
+- HTML / CSS
 
 ---
 
 ## 🗄 Database
 
 The application uses **SQL Server** with Entity Framework Core.
-Authentication and authorization are handled using **ASP.NET Core Identity**.
+
+Authentication and authorization are handled via **ASP.NET Core Identity**.
 
 ---
 
-## ▶ How to Run the Project
+## ⚙️ Setup & Run
 
-### 1️⃣ Configure the database connection
-Update the connection string in `appsettings.json`:
+### 1. Clone the repository
 
-Example:
-```json
-"ConnectionStrings": {
-  "DefaultConnection": "Server=localhost,1433;Database=EventPlannerDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True;"
-}
-```
-
-### 2️⃣ Apply migrations
 ```bash
-dotnet ef database update
-```
-
-### 3️⃣ Run the application
-```bash
-dotnet run
-```
-
-### 4️⃣ Run the unit tests
-```bash
-dotnet test
-```
-
----
-
-## 👤 Access and Roles
-
-The application supports regular users and administrators.
-Regular users can manage their own profiles and events, while administrators can manage users and core content.
-
----
-
-## 🎓 Academic Purpose
-
-This project was created for educational purposes and demonstrates practical work with:
-- MVC architecture
-- Entity Framework Core
-- Identity and authentication
-- Validation and error handling
-- Unit testing
-- Database-driven web development
+git clone https://github.com/KerenDoz/Event-Planner.git
+cd Event-Planner/EventPlanner
